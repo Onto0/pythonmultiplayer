@@ -35,3 +35,5 @@ class TicTacToeClient:
 if __name__ == "__main__":
     client = TicTacToeClient()  # Create a client instance
     client.run()  # Run the client
+
+# smth to commit
