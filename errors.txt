@@ -1,2 +1,12 @@
 problems:
-  instert
+C:\Users\akari\AppData\Local\Programs\Python\Python312\python.exe C:\Users\akari\PycharmProjects\pythonmultiplayer\client.py 
+Enter the server IP address: 192.168.1.190
+Traceback (most recent call last):
+  File "C:\Users\akari\PycharmProjects\pythonmultiplayer\client.py", line 37, in <module>
+    client = TicTacToeClient(server_ip)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\akari\PycharmProjects\pythonmultiplayer\client.py", line 7, in __init__
+    self.client.connect((host, port))
+TimeoutError: [WinError 10060] A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+
+Process finished with exit code 1
