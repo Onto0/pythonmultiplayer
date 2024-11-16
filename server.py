@@ -4,11 +4,12 @@ import time
 
 
 class TicTacToeServer:
-    def __init__(self, host="127.0.0.1", port=12345):
+    def __init__(self, port=12345):
         self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.server.bind((host, port))
+        self.host = socket.gethostbyname(socket.gethostname())  # Detect private IP
+        self.server.bind((self.host, port))
         self.server.listen(2)
-        print(f"Server started on {host}:{port}")
+        print(f"Server started on {self.host}:{port}")
         self.players = []
         self.player_symbols = ["X", "O"]
         self.winner_streak = {"X": 0, "O": 0}
@@ -25,7 +26,6 @@ class TicTacToeServer:
                 threading.Thread(target=self.run_game).start()
 
     def broadcast(self, message, exclude=None):
-        """Send a message to all players except the excluded one."""
         for conn, _ in self.players:
             if conn != exclude:
                 try:
@@ -34,7 +34,6 @@ class TicTacToeServer:
                     pass
 
     def run_game(self):
-        """Main game loop."""
         self.start_time = time.time()
         board = [[" " for _ in range(3)] for _ in range(3)]
         current_turn = 0
@@ -69,14 +68,12 @@ class TicTacToeServer:
         self.end_game()
 
     def handle_disconnection(self, current_turn):
-        """Handle when a player disconnects."""
         conn, _ = self.players[current_turn]
         self.broadcast(f"Player {self.player_symbols[current_turn]} has disconnected. Game over.\n", exclude=conn)
         conn.close()
         self.players.remove((conn, _))
 
     def end_game(self):
-        """End the game and display stats."""
         duration = time.time() - self.start_time
         self.broadcast(f"Game duration: {duration:.2f} seconds.\n")
         self.broadcast(
@@ -133,5 +130,3 @@ class TicTacToeServer:
 
 if __name__ == "__main__":
     TicTacToeServer().accept_players()
-
-# smth to commit
